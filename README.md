@@ -1,4 +1,5 @@
-pusher
+Pusher
 ======
 
-Java library for delivering push notifications
+Pusher is a Java library for delivering notifications to a multitude of clients: mobile devices, desktops,
+web clients, and email.
