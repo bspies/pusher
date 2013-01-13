@@ -1,6 +1,7 @@
 package org.pusher.api;
 
-import org.pusher.Identifiable;
+import org.pusher.destination.Destination;
+
 import java.util.Collection;
 
 /**

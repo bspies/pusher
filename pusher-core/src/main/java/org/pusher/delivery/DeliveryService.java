@@ -1,6 +1,6 @@
 package org.pusher.delivery;
 
-import org.pusher.api.Destination;
+import org.pusher.destination.Destination;
 
 /**
  * @author Brennan Spies

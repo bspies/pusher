@@ -1,4 +1,4 @@
-package org.pusher;
+package org.pusher.api;
 
 import java.io.Serializable;
 

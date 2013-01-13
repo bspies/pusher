@@ -1,6 +1,7 @@
-package org.pusher.api;
+package org.pusher.destination;
 
-import org.pusher.Identifiable;
+import org.pusher.api.Identifiable;
+import org.pusher.api.Recipient;
 
 import javax.activation.MimeType;
 
