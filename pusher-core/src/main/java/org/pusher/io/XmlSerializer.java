@@ -20,7 +20,7 @@ public class XmlSerializer implements Serializer {
             Marshaller m  = context.createMarshaller();
             m.marshal(data, writer);
         } catch (JAXBException e) {
-            e.printStackTrace();  //Todo
+            throw new SerializationException(e.getMessage(), e);
         }
     }
 }

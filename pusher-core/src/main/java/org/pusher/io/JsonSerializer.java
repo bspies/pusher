@@ -21,7 +21,7 @@ public class JsonSerializer implements Serializer {
         try {
             mapper.writeValue(writer, data);
         } catch (IOException e) {
-            e.printStackTrace();  //Todo
+            throw new SerializationException(e.getMessage(), e);
         }
     }
 }
