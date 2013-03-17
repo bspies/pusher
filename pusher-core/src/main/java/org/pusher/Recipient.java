@@ -1,4 +1,4 @@
-package org.pusher.api;
+package org.pusher;
 
 import org.pusher.destination.Destination;
 

@@ -1,16 +1,19 @@
 package org.pusher.destination;
 
-import org.pusher.api.Recipient;
+import org.pusher.MessageFormat;
+import org.pusher.Recipient;
 
 import javax.activation.MimeType;
 
 /**
+ * Base implmentation of a destination.
+ *
  * @author Brennan Spies
  */
-public abstract class AbstractDestination implements Destination {
+public abstract class BaseDestination implements Destination {
 
     private Recipient owner;
-    private MimeType messageFormat;
+    private MessageFormat messageFormat;
     private String description;
     private String destinationId;
 
@@ -27,7 +30,7 @@ public abstract class AbstractDestination implements Destination {
      * destination.
      * @return The MIME type of the format
      */
-    public MimeType getMessageFormat() {
+    public MessageFormat getMessageFormat() {
         return messageFormat;
     }
 

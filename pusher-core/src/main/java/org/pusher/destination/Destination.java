@@ -1,7 +1,8 @@
 package org.pusher.destination;
 
-import org.pusher.api.Identifiable;
-import org.pusher.api.Recipient;
+import org.pusher.Identifiable;
+import org.pusher.MessageFormat;
+import org.pusher.Recipient;
 
 import javax.activation.MimeType;
 
@@ -20,7 +21,7 @@ public interface Destination extends Identifiable {
      * destination.
      * @return The MIME type of the format
      */
-    public MimeType getMessageFormat();
+    public MessageFormat getMessageFormat();
 
     /**
      * Returns a short description of this destination.
