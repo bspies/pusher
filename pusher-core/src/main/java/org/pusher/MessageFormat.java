@@ -1,6 +1,7 @@
 package org.pusher;
 
 import javax.activation.MimeType;
+import javax.activation.MimeTypeParseException;
 
 /**
  * Class describing the format of the notification to be sent to the
@@ -10,18 +11,18 @@ import javax.activation.MimeType;
  */
 public class MessageFormat {
 
-    private String characterSet;
+    private static final String ENCODING_PARAM = "encoding";
     private MimeType mimeType;
 
     /**
      * Creates a message format with the desired character encoding and
      * MIME type of the notification.
-     * @param characterSet The character encoding of the notification
      * @param mimeType The MIME type of the notification
+     * @param characterSet The character encoding of the notification
      */
-    public MessageFormat(String characterSet, MimeType mimeType) {
-        this.characterSet = characterSet;
+    public MessageFormat(MimeType mimeType, String characterSet) {
         this.mimeType = mimeType;
+        mimeType.setParameter(ENCODING_PARAM, characterSet);
     }
 
     /**
@@ -29,15 +30,27 @@ public class MessageFormat {
      * @param mimeType The MIME type
      */
     public MessageFormat(MimeType mimeType) {
-        this(null, mimeType);  //todo default charset?
+        this.mimeType = mimeType;
+    }
+
+    public MessageFormat(String stringToParse) {
+        try {
+            this.mimeType = new MimeType(stringToParse);
+        } catch (MimeTypeParseException e) {
+            throw new IllegalArgumentException("Invalid MIME type format: " + stringToParse, e);
+        }
     }
 
     /**
      * Returns the character set encoding of the format.
      * @return The character set
      */
-    public String getCharacterSet() {
-        return characterSet;
+    public String getCharacterEncoding() {
+        return mimeType.getParameter(ENCODING_PARAM);
+    }
+
+    public void setCharacterEncoding(String charset) {
+        mimeType.setParameter(ENCODING_PARAM, charset);
     }
 
     /**
@@ -54,7 +67,12 @@ public class MessageFormat {
      * @return The message format as "Content-Type" header
      */
     public String asContentType() {
-        return String.format("%; charset=%s", mimeType, characterSet); //todo handle charset null/default
+        return mimeType.toString();
+    }
+
+    @Override
+    public String toString() {
+        return asContentType();
     }
 
     @Override
@@ -62,15 +80,12 @@ public class MessageFormat {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MessageFormat that = (MessageFormat) o;
-        return !(characterSet != null ? !characterSet.equals(that.characterSet) : that.characterSet != null)
-                && mimeType.equals(that.mimeType);
+        return mimeType.equals(that.mimeType);
 
     }
 
     @Override
     public int hashCode() {
-        int result = characterSet != null ? characterSet.hashCode() : 0;
-        result = 31 * result + mimeType.hashCode();
-        return result;
+        return mimeType.hashCode();
     }
 }
