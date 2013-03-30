@@ -1,7 +1,5 @@
 package org.pusher;
 
-import java.io.Serializable;
-
 /**
  * @author Brennan Spies
  */
