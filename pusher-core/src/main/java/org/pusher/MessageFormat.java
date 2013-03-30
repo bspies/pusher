@@ -2,6 +2,7 @@ package org.pusher;
 
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
+import java.nio.charset.Charset;
 
 /**
  * Class describing the format of the notification to be sent to the
@@ -11,18 +12,18 @@ import javax.activation.MimeTypeParseException;
  */
 public class MessageFormat {
 
-    private static final String ENCODING_PARAM = "encoding";
+    private static final String ENCODING_PARAM = "charset";
     private MimeType mimeType;
 
     /**
      * Creates a message format with the desired character encoding and
      * MIME type of the notification.
-     * @param mimeType The MIME type of the notification
+     * @param baseType The base type (MIME type), e.g. "text/plain"
      * @param characterSet The character encoding of the notification
      */
-    public MessageFormat(MimeType mimeType, String characterSet) {
-        this.mimeType = mimeType;
-        mimeType.setParameter(ENCODING_PARAM, characterSet);
+    public MessageFormat(String baseType, Charset characterSet) {
+        this(baseType);
+        setCharacterEncoding(characterSet);
     }
 
     /**
@@ -33,6 +34,11 @@ public class MessageFormat {
         this.mimeType = mimeType;
     }
 
+    /**
+     * Creates a message format with the desired raw string. The string must be in
+     * a format consistent with a MIME type as specified in RFC 2046 and RFC 2046.
+     * @param stringToParse The raw format string
+     */
     public MessageFormat(String stringToParse) {
         try {
             this.mimeType = new MimeType(stringToParse);
@@ -49,8 +55,21 @@ public class MessageFormat {
         return mimeType.getParameter(ENCODING_PARAM);
     }
 
+    /**
+     * Sets the character encoding of the message.
+     * @param charset The character set
+     */
     public void setCharacterEncoding(String charset) {
         mimeType.setParameter(ENCODING_PARAM, charset);
+    }
+
+    /**
+     * Sets the character encoding of the message using
+     * the given {@link Charset}.
+     * @param charset The character set
+     */
+    public void setCharacterEncoding(Charset charset) {
+        setCharacterEncoding(charset.name());
     }
 
     /**
