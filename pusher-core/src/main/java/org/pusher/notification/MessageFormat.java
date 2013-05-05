@@ -1,4 +1,4 @@
-package org.pusher;
+package org.pusher.notification;
 
 import javax.activation.MimeType;
 import javax.activation.MimeTypeParseException;
