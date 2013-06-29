@@ -9,7 +9,6 @@
         <groupId>com.github.bspies</groupId>
         <version>0.1</version>
     </parent>
-
     <artifactId>pusher-core</artifactId>
 
     <repositories>
@@ -17,9 +16,18 @@
             <id>gcm-server-repository</id>
             <url>https://raw.github.com/slorber/gcm-server-repository/master/releases/</url>
         </repository>
+        <repository>
+            <id>keychain-snapshots</id>
+            <url>https://github.com/bspies/mvn-repo/raw/master/snapshots</url>
+        </repository>
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.bspies</groupId>
+            <artifactId>keychain-core</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
@@ -39,11 +47,6 @@
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-runtime</artifactId>
             <version>1.0.12</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.android.gcm</groupId>
-            <artifactId>gcm-server</artifactId>
-            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>javax.mail</groupId>
