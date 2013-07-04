@@ -1,10 +1,9 @@
-package org.pusher.notification;
+package org.pusher.apns.notification;
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import java.util.Collection;
@@ -13,16 +12,16 @@ import java.util.Map;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
- * Standard notification for the Apple Push Notification Service.
+ * Standard push notification for the Apple Push Notification Service.
  *
  * @author Brennan Spies
  */
-public class APNSNotification {
+@JsonInclude(Include.NON_NULL)
+public class PushNotification {
 
     @JsonProperty("aps")
-    private Payload payload;
+    private Body body;
     @JsonProperty("mdm")
-    @JsonInclude(Include.NON_NULL)
     private String mobileDeviceManagement;
     private Map<String,Object> customFields
             = Maps.newHashMap();
@@ -32,8 +31,8 @@ public class APNSNotification {
      * alert body.
      * @param body The alert body
      */
-    public APNSNotification(String body) {
-        this.payload = new Payload(body);
+    public PushNotification(String body) {
+        this.body = new Body(body);
     }
 
     /**
@@ -44,16 +43,16 @@ public class APNSNotification {
      * @param localizedKey The message key
      * @param localizedArguments The arguments to format the %@ and %n$@ specifiers
      */
-    public APNSNotification(String localizedKey, Collection<String> localizedArguments) {
-        this.payload = new Payload(localizedKey, localizedArguments);
+    public PushNotification(String localizedKey, Collection<String> localizedArguments) {
+        this.body = new Body(localizedKey, localizedArguments);
     }
 
     /**
-     * Returns the main payload of the notification.
-     * @return The main push payload
+     * Returns the main body of the notification.
+     * @return The main push body
      */
-    public Payload getPayload() {
-        return payload;
+    public Body getBody() {
+        return body;
     }
 
     /**
@@ -96,7 +95,7 @@ public class APNSNotification {
      * @param sound The sound to be played
      */
     public void setSound(String sound) {
-        payload.setSound(sound);
+        body.setSound(sound);
     }
 
     /**
@@ -106,7 +105,7 @@ public class APNSNotification {
      * @param badge The number to be displayed in the badge, 0 for no badge
      */
     public void setBadge(int badge) {
-        payload.setBadge(badge);
+        body.setBadge(badge);
     }
 
     /**
@@ -117,7 +116,7 @@ public class APNSNotification {
      * @param actionKey The key
      */
     public void setActionKey(String actionKey) {
-        payload.getAlert().setActionKey(actionKey);
+        body.getAlert().setActionKey(actionKey);
     }
 
     /**
@@ -128,86 +127,6 @@ public class APNSNotification {
      * @param imageFile The image file name
      */
     public void setLaunchImage(String imageFile) {
-        payload.getAlert().setLaunchImage(imageFile);
-    }
-
-    /////////////////////////////////////////////////////////
-    // Utility classes to represent JSON structure.
-    /////////////////////////////////////////////////////////
-
-    /**
-     * The main payload of the notification.
-     */
-    private static class Payload {
-        @JsonProperty
-        private Alert alert;
-        @JsonProperty
-        @JsonInclude(Include.NON_NULL)
-        private String sound;
-        @JsonProperty
-        @JsonInclude(Include.NON_NULL)
-        private Integer badge;
-
-        Payload(String body) {
-            alert = new Alert(body);
-        }
-
-        Payload(String key, Collection<String> arguments) {
-            alert = new Alert(key, arguments);
-        }
-
-        Alert getAlert() { return alert; }
-
-        //the sound for the notification
-        String getSound() { return sound; }
-        void setSound(String sound) { this.sound = sound; }
-
-        //the badge number
-        int getBadge() { return badge; }
-        void setBadge(int badge) { this.badge = badge; }
-    }
-
-    /**
-     * The notification alert.
-     */
-    private static class Alert {
-
-        @JsonProperty
-        @JsonInclude(Include.NON_NULL)
-        private String body;
-        @JsonProperty("action-loc-key")
-        @JsonInclude(Include.NON_NULL)
-        private String actionKey;
-        @JsonProperty("loc-key")
-        @JsonInclude(Include.NON_NULL)
-        private String localizedKey;
-        @JsonProperty("loc-args")
-        @JsonInclude(Include.NON_EMPTY)
-        private Collection<String> localizedArguments
-                = Lists.newArrayList();
-        @JsonProperty("launch-image")
-        @JsonInclude(Include.NON_NULL)
-        private String launchImage;
-
-        Alert(String body) {
-           this.body = body;
-        }
-
-        Alert(String key, Collection<String> arguments) {
-           this.localizedKey = key;
-           this.localizedArguments = arguments;
-        }
-
-        String getBody() { return body; }
-
-        String getActionKey() { return actionKey; }
-        void setActionKey(String actionKey) { this.actionKey = actionKey; }
-
-        String getLocalizedKey() { return localizedKey; }
-
-        Collection<String> getLocalizedArguments() { return localizedArguments; }
-
-        String getLaunchImage() { return  launchImage; }
-        void setLaunchImage(String launchImage) { this.launchImage = launchImage; }
+        body.getAlert().setLaunchImage(imageFile);
     }
 }
